@@ -7,23 +7,78 @@ html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-seri
 a{color:var(--accent);text-decoration:none}
 .site-header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:linear-gradient(90deg,rgba(255,255,255,0.02),transparent);backdrop-filter:blur(6px)}
 .brand{font-weight:700;font-size:1.2rem}
-.btn{background:var(--accent);color:white;border:none;padding:10px 14px;border-radius:8px;cursor:pointer}
+.btn{background:var(--accent);color:white;border:none;padding:10px 14px;border-radius:8px;cursor:pointer;transition:all 0.2s}
+.btn:hover{background:#3d39ce;transform:translateY(-2px)}
+.btn.following{background:#4f46e5;opacity:0.8}
 
 .layout{display:grid;grid-template-columns:260px 1fr 320px;gap:var(--gap);padding:20px;align-items:start;min-height:calc(100vh - 120px)}
 .sidebar{background:var(--card);padding:16px;border-radius:var(--radius)}
 .profile-card{display:flex;flex-direction:column;align-items:center;text-align:center;padding:12px;background:var(--glass);border-radius:10px}
-.avatar{font-size:36px}
+.avatar{font-size:48px;margin-bottom:8px}
+.profile-card .name{font-weight:600;margin:8px 0 4px}
+.profile-card .email{font-size:0.85rem;color:var(--muted)}
+
+.profile-stats-sidebar{display:flex;flex-direction:column;gap:12px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.04)}
+.profile-stats-sidebar .stat-item{display:flex;flex-direction:column;align-items:center}
+.profile-stats-sidebar .stat-item strong{font-size:1.2rem;color:var(--accent)}
+.profile-stats-sidebar .stat-item span{font-size:0.75rem;color:var(--muted)}
+
 .feed{padding:6px}
-.post{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:16px;margin-bottom:12px;border-radius:10px}
+.post{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:16px;margin-bottom:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04)}
 .new-post{border:1px dashed rgba(255,255,255,0.04)}
 .rightcol{background:var(--card);padding:16px;border-radius:var(--radius)}
+
+/* Post styles */
+.post-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.post-author{flex:1}
+.post-author strong{cursor:pointer;color:#fff;transition:color 0.2s}
+.post-author strong:hover{color:var(--accent)}
+.post-time{display:block;font-size:0.85rem;color:var(--muted);margin-top:4px}
+.post-content{margin:12px 0;line-height:1.5}
+.post-stats{display:flex;gap:16px;font-size:0.9rem;margin:12px 0;color:var(--muted)}
+.post-stats .stat{display:flex;align-items:center;gap:4px}
+
+.post-actions{display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.04)}
+.btn-like, .btn-reply, .btn-share, .btn-delete{
+  flex:1;padding:8px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+  color:var(--muted);border-radius:6px;cursor:pointer;transition:all 0.2s;font-size:0.9rem;
+}
+.btn-like:hover, .btn-reply:hover, .btn-share:hover{background:rgba(79,70,229,0.1);color:var(--accent)}
+.btn-like.active{background:rgba(239,68,68,0.2);color:#ef4444}
+.btn-delete{background:rgba(239,68,68,0.1);color:#ef4444}
+.btn-delete:hover{background:rgba(239,68,68,0.2)}
 
 /* Form / textarea */
 .post textarea{width:100%;background:transparent;border:1px solid rgba(255,255,255,0.04);padding:10px;border-radius:8px;color:inherit;resize:vertical}
 .post form{display:block}
 .post strong{color:#fff}
 
+/* Profile Modal */
+.profile-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:1000}
+.profile-modal-content{background:var(--card);border-radius:12px;padding:32px;max-width:400px;width:90%;position:relative;border:1px solid rgba(255,255,255,0.1)}
+.modal-close{position:absolute;top:12px;right:12px;background:none;border:none;color:#fff;font-size:28px;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{color:var(--accent)}
+
+.profile-header{text-align:center;margin-bottom:24px}
+.profile-avatar{font-size:64px;margin-bottom:16px}
+.profile-info h2{margin:8px 0;font-size:1.5rem}
+.profile-email{color:var(--muted);font-size:0.9rem;margin:4px 0}
+.profile-bio{color:var(--muted);margin:12px 0}
+
+.profile-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:16px}
+.stat-item{text-align:center}
+.stat-item strong{display:block;font-size:1.3rem;color:var(--accent);margin-bottom:4px}
+.stat-item span{font-size:0.8rem;color:var(--muted)}
+
+.profile-actions{display:flex;gap:12px;margin-top:24px}
+.profile-actions .btn{flex:1}
+
 .site-footer{text-align:center;padding:12px;color:var(--muted)}
+
+/* Links in sidebar */
+.links{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.links a{padding:8px 12px;background:rgba(255,255,255,0.05);border-radius:6px;transition:all 0.2s}
+.links a:hover{background:rgba(79,70,229,0.2)}
 
 /* Mobile first */
 @media(max-width:800px){
@@ -53,4 +108,7 @@ button:focus, a:focus{outline:2px solid rgba(79,70,229,0.6);outline-offset:2px}
 @media(max-width:480px){
   .brand{font-size:1rem}
   .sidebar{display:none}
+  .profile-modal-content{padding:20px}
+  .post-actions{flex-direction:column}
+  .post-stats{flex-direction:column;gap:8px}
 }
