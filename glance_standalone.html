@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Glance — App (Standalone)</title>
+  <style>
+  /* inline core styles (simplified) */
+:root{--bg:#fafafa;--surface:#ffffff;--muted:#6b7280;--accent:#ff385c;--radius:14px;--gap:18px;--shadow:0 6px 20px rgba(16,24,40,0.08)}*{box-sizing:border-box}html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:#0f1724}a{color:var(--accent);text-decoration:none}.site-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:linear-gradient(90deg,rgba(255,255,255,0.6),transparent);backdrop-filter:blur(6px);position:sticky;top:0;z-index:30;border-bottom:1px solid rgba(15,23,36,0.04)}.brand{font-weight:800;font-size:1.15rem;display:flex;align-items:center;gap:10px}.btn{background:linear-gradient(90deg,var(--accent),#ff6b8a);color:white;border:none;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600}.layout{display:grid;grid-template-columns:260px 1fr 320px;gap:var(--gap);padding:22px;align-items:start;min-height:calc(100vh - 120px)}.sidebar{background:transparent;padding:6px}.profile-card{display:flex;flex-direction:column;align-items:center;text-align:center;padding:12px;background:var(--surface);border-radius:12px;box-shadow:var(--shadow)}.avatar{font-size:36px;background:linear-gradient(90deg,#ffd6e0,#ffd1a9);width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center}.feed{padding:0}.post{background:var(--surface);padding:14px;margin-bottom:14px;border-radius:12px;box-shadow:var(--shadow)}.new-post{display:block}.post .post-image{width:100%;height:320px;object-fit:cover;border-radius:10px;margin-top:12px}.post .meta{display:flex;align-items:center;gap:10px}.post .meta .avatar-sm{width:40px;height:40px;border-radius:50%;background:#f3f4f6;display:flex;align-items:center;justify-content:center}.post .actions{display:flex;gap:10px;margin-top:8px;color:var(--muted)}.rightcol{background:transparent;padding:6px}.suggestions{background:var(--surface);padding:12px;border-radius:12px;box-shadow:var(--shadow)}.site-footer{text-align:center;padding:12px;color:var(--muted)}.stories{display:flex;gap:10px;padding:12px 0;margin-bottom:10px;overflow:auto}.story{flex:0 0 auto;width:84px;text-align:center}.story .ring{width:74px;height:74px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,#ff9a9e,#fad0c4);box-shadow:var(--shadow)}.story img{width:64px;height:64px;border-radius:50%;object-fit:cover}.story .label{font-size:0.85rem;color:var(--muted);margin-top:6px}.bottom-nav{position:fixed;left:0;right:0;bottom:0;height:60px;background:#fff;border-top:1px solid rgba(15,23,36,0.06);display:flex;justify-content:space-around;align-items:center}.bottom-nav .bn{background:transparent;border:none;font-size:22px}@media(max-width:1000px){.layout{grid-template-columns:1fr;padding:12px}.sidebar{display:none}.rightcol{display:none}}@media(min-width:1200px){.layout{grid-template-columns:300px 1fr 360px;max-width:1200px;margin:0 auto}}.post textarea{width:100%;background:transparent;border:1px solid rgba(15,23,36,0.06);padding:10px;border-radius:10px;color:inherit;resize:vertical}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">Glance</div>
+    <nav class="nav">
+      <button id="btn-login" class="btn">Iniciar (Demo)</button>
+    </nav>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <section class="profile-card">
+        <div class="avatar">G</div>
+        <div class="name">Invitado</div>
+        <div class="email">—</div>
+      </section>
+      <section class="links">
+        <a href="#">Inicio</a><br>
+        <a href="#">Explorar</a><br>
+        <a href="#">Mensajes</a>
+      </section>
+    </aside>
+
+    <section class="feed" id="feed">
+      <div class="stories" id="stories"></div>
+      <form id="new-post-form" class="post new-post">
+        <textarea id="new-post-text" placeholder="¿Qué estás pensando?" rows="3"></textarea>
+        <div style="text-align:right;margin-top:8px">
+          <button id="btn-post" class="btn" type="submit">Publicar</button>
+        </div>
+      </form>
+    </section>
+
+    <aside class="rightcol">
+      <section class="suggestions">
+        <h3>Sugerencias</h3>
+        <p>Conecta con amigos y sigue temas que te interesen.</p>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="site-footer">© Glance — Demo</footer>
+
+  <script>
+  // Standalone JS: posts in localStorage, demo user auto-set
+  (function(){
+    const POSTS_KEY='glance_posts_v1';
+    const USER_KEY='glance_user_v1';
+    function escapeHtml(s){return String(s).replace(/[&<>\"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+    function loadPosts(){try{const r=localStorage.getItem(POSTS_KEY);return r?JSON.parse(r):[];}catch(e){return[]}}
+    function savePosts(p){localStorage.setItem(POSTS_KEY,JSON.stringify(p))}
+    function renderStories(){const s=document.getElementById('stories');if(!s)return;const stories=[{name:'Amigos',img:'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop'},{name:'Trending',img:'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400&h=400&fit=crop'},{name:'Videos',img:'https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?w=400&h=400&fit=crop'},{name:'Música',img:'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&h=400&fit=crop'}];s.innerHTML='';stories.forEach(st=>{const el=document.createElement('div');el.className='story';el.innerHTML=`<div class="ring"><img src="${st.img}" alt="${escapeHtml(st.name)}"></div><div class="label">${escapeHtml(st.name)}</div>`;s.appendChild(el)})}
+    function renderPosts(){const feed=document.getElementById('feed');if(!feed)return;Array.from(feed.querySelectorAll('.post')).forEach(node=>{if(node.id!=='new-post-form')node.remove()});const posts=loadPosts();posts.forEach(p=>{const d=document.createElement('div');d.className='post';const userHtml=`<div class="meta"><div class="avatar-sm">${escapeHtml((p.userName||'').charAt(0).toUpperCase())}</div><div><strong>${escapeHtml(p.userName||'Anónimo')}</strong><div style="color:var(--muted);font-size:0.85rem">${new Date(p.createdAt).toLocaleDateString()}</div></div></div>`;const imageHtml=p.image?`<img class="post-image" src="${escapeHtml(p.image)}" alt="post image">` : '';d.innerHTML=`${userHtml}<div style="margin-top:10px">${escapeHtml(p.text)}</div>${imageHtml}<div class="actions">❤ ${p.likes||0} &nbsp;&nbsp; 💬 ${p.comments||0}</div>`;feed.appendChild(d)})}
+    function ensureDemoPosts(){const posts=loadPosts();if(posts&&posts.length>0)return;const sample=[{text:'Bienvenido a Glance — prueba publicar, dar like y explorar.',createdAt:Date.now()-1000*60*60,userName:'Glance Team',image:'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?w=1200&h=800&fit=crop',likes:12,comments:3},{text:'Mira este atardecer increíble!',createdAt:Date.now()-1000*60*60*5,userName:'Alicia',image:'https://images.unsplash.com/photo-1501973801540-537f08ccae7b?w=1200&h=800&fit=crop',likes:34,comments:6},{text:'Vídeos cortos y tendencias cada día.',createdAt:Date.now()-1000*60*60*24,userName:'Juan',likes:5,comments:1}];savePosts(sample)}
+    function getCurrentUser(){try{const r=localStorage.getItem(USER_KEY);return r?JSON.parse(r):null}catch(e){return null}}
+    function saveUser(u){try{localStorage.setItem(USER_KEY,JSON.stringify(u))}catch(e){}}
+    document.addEventListener('DOMContentLoaded',()=>{ // set demo user
+      if(!getCurrentUser()){saveUser({name:'Demo User',email:'demo@local',provider:'local'})}
+      ensureDemoPosts();renderStories();renderPosts();
+      const form=document.getElementById('new-post-form');if(form)form.addEventListener('submit',e=>{e.preventDefault();const t=document.getElementById('new-post-text');if(!t)return;const v=t.value.trim();if(!v)return;const posts=loadPosts();const user=getCurrentUser()||{name:'Anónimo'};posts.unshift({text:v,createdAt:Date.now(),userName:user.name});savePosts(posts);t.value='';renderPosts()})
+      document.getElementById('btn-login').addEventListener('click',()=>{alert('Modo demo: usuario ya establecido. Para Google Sign-In configure Firebase o abra con Electron para experiencia completa.')})
+    })
+  })();
+  </script>
+</body>
+</html>
