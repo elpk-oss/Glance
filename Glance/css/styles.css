@@ -1,0 +1,56 @@
+:root{
+  --bg:#0f1724; --card:#0b1220; --muted:#9aa4b2; --accent:#4f46e5; --glass: rgba(255,255,255,0.03);
+  --radius:12px; --gap:18px;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#071026 0%, #07182a 100%);color:#e6eef8}
+a{color:var(--accent);text-decoration:none}
+.site-header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:linear-gradient(90deg,rgba(255,255,255,0.02),transparent);backdrop-filter:blur(6px)}
+.brand{font-weight:700;font-size:1.2rem}
+.btn{background:var(--accent);color:white;border:none;padding:10px 14px;border-radius:8px;cursor:pointer}
+
+.layout{display:grid;grid-template-columns:260px 1fr 320px;gap:var(--gap);padding:20px;align-items:start;min-height:calc(100vh - 120px)}
+.sidebar{background:var(--card);padding:16px;border-radius:var(--radius)}
+.profile-card{display:flex;flex-direction:column;align-items:center;text-align:center;padding:12px;background:var(--glass);border-radius:10px}
+.avatar{font-size:36px}
+.feed{padding:6px}
+.post{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:16px;margin-bottom:12px;border-radius:10px}
+.new-post{border:1px dashed rgba(255,255,255,0.04)}
+.rightcol{background:var(--card);padding:16px;border-radius:var(--radius)}
+
+/* Form / textarea */
+.post textarea{width:100%;background:transparent;border:1px solid rgba(255,255,255,0.04);padding:10px;border-radius:8px;color:inherit;resize:vertical}
+.post form{display:block}
+.post strong{color:#fff}
+
+.site-footer{text-align:center;padding:12px;color:var(--muted)}
+
+/* Mobile first */
+@media(max-width:800px){
+  .layout{grid-template-columns:1fr;padding:12px}
+  .sidebar{order:2}
+  .rightcol{order:3}
+  .feed{order:1}
+}
+
+/* Tablet */
+@media(min-width:801px) and (max-width:1200px){
+  .layout{grid-template-columns:220px 1fr;}
+  .rightcol{display:none}
+}
+
+/* TV / Very large screens */
+@media(min-width:1600px){
+  .layout{grid-template-columns:320px 1fr 420px;max-width:1400px;margin:0 auto}
+  .brand{font-size:1.4rem}
+  .post{font-size:1.05rem;padding:20px}
+}
+
+/* Accessibility tweaks */
+button:focus, a:focus{outline:2px solid rgba(79,70,229,0.6);outline-offset:2px}
+
+/* Small screens: shrink sidebar */
+@media(max-width:480px){
+  .brand{font-size:1rem}
+  .sidebar{display:none}
+}
